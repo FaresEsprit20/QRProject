@@ -23,6 +23,11 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 @app.route("/upload", methods=["POST"])
 def index():
     # terrasect treatement
+    request_data= request.data
+    request_data=json.loads(request_data.decode('utf8'))
+    print(request_data)
+    filename = request_data['fileName']
+    print(filename)
     EncodedQrdata = decode(Image.open('Sources/qrFr.png'))
     decodedData = json.loads(EncodedQrdata[0][0])
     print(decodedData)
@@ -49,7 +54,7 @@ def index():
     #print(decode_data)
     # Create Dictionary
     
-    image = cv2.imread("Sources/FaresBenslamaFr.PNG")
+    image = cv2.imread("public/images/"+filename)
     image = cv2.resize(image, None, fx=1.2, fy=1.2,
                        interpolation=cv2.INTER_CUBIC)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
