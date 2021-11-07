@@ -1,0 +1,13 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+  <h1>Covid Certificate Verification</h1>
+<!--  SINGLE FILE -->
+<!--   PHOTO-->
+
+<form action="/uploadFile" enctype="multipart/form-data" method="POST"> 
+  <input type="file" name="myImage" accept="image/*" />
+  <input type="submit" value="Upload Photo"/>
+</form>
+{{ result }}
+{% endblock %}
