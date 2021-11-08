@@ -1,13 +1,36 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
-  <h1>Covid Certificate Verification</h1>
-<!--  SINGLE FILE -->
-<!--   PHOTO-->
+  
+<div class="container">
+<div class="row" style="margin-top:80px;">
+<div class="col-4">
+</div>
 
-<form action="/uploadFile" enctype="multipart/form-data" method="POST"> 
-  <input type="file" name="myImage" accept="image/*" />
-  <input type="submit" value="Upload Photo"/>
+<div class="col-4">
+<!--   PHOTO-->
+<form action="/uploadFile" enctype="multipart/form-data" method="POST">
+  <fieldset>
+    <legend>Uploading Certificate</legend>
+    <div class="mb-12" style="margin-bottom:20px;">
+      <label for="myImage" class="form-label">Choose certificate</label>
+      <input type="file" name="myImage" accept="image/*"  required />
+    </div>
+   
+    <button type="submit" class="btn btn-primary" style="margi">Upload</button>
+  </fieldset>
 </form>
-{{ result }}
+</div>
+
+<div class="col-4">
+</div>
+</div>
+
+</div>
+
+
+
+
 {% endblock %}
+
+

@@ -22,6 +22,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//Adding Bootstrap and Jquery
+app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 
 app.use('/', indexRouter);
 app.use('/uploadFile',indexRouter)
@@ -32,11 +36,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-const port = 3001
 
-app.listen(port, () => {
-  console.log(`App Listening on Port : ${port}`)
-})
 
 // error handler
 app.use(function(err, req, res, next) {

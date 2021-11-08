@@ -1,8 +1,56 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
-  <h1>Covid Certificate Verification</h1>
+
+
+<div class="container" >
+<div class="row" style="margin-top:80px;margin-bottom:80px">
+<div class="col-2">
+</div>
+<div class="col-8">
+
+ <h3 >Covid Certificate Verification</h3>
+ <br>
+ <br>
 <!--  SINGLE FILE -->
 <!--   PHOTO-->
-{{ result.fullname }}
+{% if result.response == false %}
+<div class="card">
+  <div class="card-header">
+    Not Compatible
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">NO Match Found</h5>
+    <p class="card-text">This Certificate is not compatible at all with the Qrcode</p>
+    <a href="/" class="btn btn-primary">Go back</a>
+  </div>
+</div>
+{% elseif result.response == true %}
+
+<div class="card">
+  <div class="card-header">
+    Compatible Certificate
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Match Found</h5>
+    <p class="card-text">This Certificate is compatible with <strong>{{ result.fullname }}</strong> with Cin : <strong>{{ result.cin }}</strong></p>
+     <p class="card-text">Vaccinated By <strong>{{ result.vaccine }}</strong> at  <strong>{{ result.center }}</strong>.</p>
+     <p class="card-text">The first date was at <strong>{{ result.firstDate }}</strong> And the second one was at  <strong>{{ result.SecondDate }}</strong></p>
+    <a href="/" class="btn btn-primary">Go back</a>
+  </div>
+</div>
+
+
+
+{% endif %}
+
+</div>
+
+</div>
+<div class="col-2">
+</div>
+</div>
+
+ 
+
 {% endblock %}
