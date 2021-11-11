@@ -39,16 +39,21 @@ def index():
     decoded_cin = decodedData["idNumber"]
     decoded_vaccine = decodedData["vaccineDTOS"][0]["vaccineName"]
     decoded_firstvaccineDate = decodedData["vaccineDTOS"][0]["vaccinDate"][0:10]
-    decoded_secondvaccineDate = decodedData["vaccineDTOS"][1]["vaccinDate"][0:10]
-    decoded_vaccineCenter = decodedData["vaccineDTOS"][1]["vaccinationCenter"]
+    listSize = len(decodedData["vaccineDTOS"])
+    print("size of the list is   :   "+str(listSize))
+    if listSize> 1:
+     decoded_secondvaccineDate = decodedData["vaccineDTOS"][1]["vaccinDate"][0:10]
+     decoded_vaccineCenter = decodedData["vaccineDTOS"][1]["vaccinationCenter"]
+    else:
+     decoded_vaccineCenter = decodedData["vaccineDTOS"][0]["vaccinationCenter"]
+   
     print(decoded_firstname)
     print(decoded_lastname)
     print(decoded_birth)
     print(decoded_cin)
     print(decoded_vaccine)
     print(decoded_firstvaccineDate)
-    print(decoded_secondvaccineDate)
-    print(decoded_vaccineCenter)
+    
  
     #decode_data=json.loads(EncodedQrdata)
     #decodedQr = json.loads(EncodedQrdata)
@@ -56,28 +61,33 @@ def index():
     # Create Dictionary
     
     image = cv2.imread("public/images/"+filename)
+    #resize the image to new size
     image = cv2.resize(image, None, fx=1.2, fy=1.2,
                        interpolation=cv2.INTER_CUBIC)
+    #convert original rvb color to gray color
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    #Renvoie un nouveau tableau de forme et de type donnés, rempli de ceux 
     kernel = np.ones((1, 1), np.uint8)
     image = cv2.dilate(image, kernel, iterations=1)
     image = cv2.erode(image, kernel, iterations=1)
-
+    #appliquer un filtre gaussien
     cv2.threshold(cv2.GaussianBlur(image, (5, 5), 0), 0, 255,
                   cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-
+    #appliquer un filtre bilateral
     cv2.threshold(cv2.bilateralFilter(image, 5, 75, 75), 0,
                   255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-
+    #appliquer un filtre median
     cv2.threshold(cv2.medianBlur(image, 3), 0, 255,
                   cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
+    #appliquer un filtre gaussien
     cv2.adaptiveThreshold(cv2.GaussianBlur(image, (5, 5), 0), 255,
                           cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
-
+    #appliquer un filtre bilateral
     cv2.adaptiveThreshold(cv2.bilateralFilter(
         image, 9, 75, 75), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
 
+     #appliquer un filtre median
     cv2.adaptiveThreshold(cv2.medianBlur(
         image, 3), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
 
@@ -108,7 +118,7 @@ def index():
 
 # ---------- Vaccine center------------------
     center_pos = (cleared_text.find("Centre de vaccination")+21)
-    center2_pos = center_pos + 40
+    center2_pos = center_pos + 25
     center = cleared_text[center_pos:center2_pos].strip()
     print("center")
     print(center)
@@ -136,15 +146,26 @@ def index():
     print(center)
     if((decoded_cin == cin) and (decoded_fullname == nomPrenom) and (decoded_vaccine == vaccin) and (decoded_vaccineCenter == center)):
      print("Match found")
-     thisdict = {
-    "response": True,
-     "cin": decoded_cin,
-     "fullname": decoded_fullname ,
-     "vaccine": decoded_vaccine,
-     "center": decoded_vaccineCenter,
-     "firstDate": decoded_firstvaccineDate,
-     "SecondDate": decoded_secondvaccineDate
-    }
+     if listSize > 1:
+      thisdict = {
+      "response": True,
+      "cin": decoded_cin,
+      "fullname": decoded_fullname ,
+      "vaccine": decoded_vaccine,
+      "center": decoded_vaccineCenter,
+      "firstDate": decoded_firstvaccineDate,
+      "SecondDate": decoded_secondvaccineDate
+      }
+     else:
+       thisdict = {
+      "response": True,
+      "cin": decoded_cin,
+      "fullname": decoded_fullname ,
+      "vaccine": decoded_vaccine,
+      "center": decoded_vaccineCenter,
+      "firstDate": decoded_firstvaccineDate,
+      "SecondDate": "none"
+      }
     else:
      thisdict = {
      "response": False,
