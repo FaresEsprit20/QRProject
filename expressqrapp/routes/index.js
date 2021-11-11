@@ -22,9 +22,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.route("/uploadFile")
-  .post(upload.single("myImage") ,indexController.uploadFile)
+  .post(upload.fields([{
+    name: 'myImage', maxCount: 1
+  }, {
+    name: 'myqr', maxCount: 1
+  }]) ,indexController.uploadFile)
 
   
-
-
 module.exports = router;

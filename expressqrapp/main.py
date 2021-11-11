@@ -28,7 +28,8 @@ def index():
     print(request_data)
     filename = request_data['fileName']
     print(filename)
-    EncodedQrdata = decode(Image.open('Sources/qrFr.png'))
+    qrname = request_data['fileNameTwo']
+    EncodedQrdata = decode(Image.open("public/images/"+qrname))
     decodedData = json.loads(EncodedQrdata[0][0])
     print(decodedData)
     print(type(decodedData))

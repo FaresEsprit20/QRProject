@@ -5,12 +5,19 @@ var axios = require('axios');
 module.exports = {
 
 uploadFile: async (req, res, next) => {
+  
+  
+   console.log(JSON.stringify(req.files.myImage));
+   console.log("*******************");
+   console.log(JSON.stringify(req.files.myqr));
+ 
+   filename = req.files["myImage"][0].filename;
 
-   filename = req.file.filename
-   console.log(filename)
+   filenametwo = req.files["myqr"][0].filename;
   
    axios.post('http://127.0.0.1:5000/upload', {
     fileName: filename,
+    fileNameTwo: filenametwo
  })
  .then(function (response) {
     console.log(response);
